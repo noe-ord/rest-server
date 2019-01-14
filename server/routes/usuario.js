@@ -5,13 +5,24 @@ const _ = require('underscore');//el estandar es el _
 // sirve para filtrar, mapear, reducir, cada uno
 const Usuario = require('../models/usuario');
 
-app.get('/usuario', function(req, res) {
+const {verificaToken, verificaAdmin_Role} = require('../middlewares/autentication');
+// const {} = require('../middlewares/autentication');
+app.get('/usuario', verificaToken, (req, res) => {
+
+    // Ejemplo de extraer datos espesificos del usr
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // })
+    // 
+
     let desde = req.query.desde || 0;
     desde = Number(desde);
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    // 
+    //  {_id:false, nombre: true} ó 'nombre:false' no lo muestra
     Usuario.find({estado:true}, 'nombre email role estado google img') 
     //.find({condicionales}, 'valores( de mi schema) que solo deseo mostrar') traeme todos los registros
         .skip(desde) //salat apartir de un registro en adelante
@@ -25,18 +36,19 @@ app.get('/usuario', function(req, res) {
             }
             //count({condicionales}) Cuenta todos los registros que cumplan con lo anterior
             Usuario.count({estado: true}, (err, conteo) => {
+               
                 res.json({
                     ok: true,
                     usuarios,
                     cuantos: conteo
                 });
 
-            })   //Hace un conteo de los registros
+            });   //Hace un conteo de los registros
         }) //ejecutalo
 
 
 });
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
     // Para obtener los datos por des esta manera tambien por post, put, delete
     let body = req.body;
 // Por nomenglatura se declara la primer letra en mayusculas
@@ -77,9 +89,9 @@ usuario.save((err, usuarioDB) => {
     // }
    
 });
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role],(req, res) => {
     let id = req.params.id;
-    // _.pick(se solicita el objeto, valores quei si actualizare)
+    // _.pick(se solicita el objeto, valores que si actualizare)
     let body = _.pick(req.body, ['nombre','email','img','role','estado']) ;
     
     
@@ -108,7 +120,7 @@ app.put('/usuario/:id', (req, res) => {
 
 
 });
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
     // res.json('delete Usuario');
 
     let id = req.params.id;

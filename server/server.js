@@ -15,10 +15,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Rutas del sitio
-app.use(require('./routes/usuario'));
+// app.use(require('./routes/usuario'));
+// app.use(require('./routes/login'));
+
+// Como cargar todas la rutas archivo global
+app.use(require('./routes/index'));
 
 //'mongodb://localhost:27017/cafe'
+debugger;
 mongoose.connect( process.env.URLDB, (err, res) => {
+   
     if(err) throw err;
 
     console.log(' Base de datos ONLINE ');
