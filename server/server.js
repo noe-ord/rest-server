@@ -4,7 +4,7 @@ require('./config/config');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-
+const path = require('path');
 
 const bodyParser = require('body-parser');
 // app.use son middlewares
@@ -13,6 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
  
 // parse application/json
 app.use(bodyParser.json())
+
+
+//Habilitar la carpeta publica
+// path es una pakage que bienen integrada con node
+// path.resolve resolvera todas las rutas apartir del public 
+app.use(express.static(path.resolve( __dirname, '../public')));
+
+console.log('ariba direccion *****');
 
 // Rutas del sitio
 // app.use(require('./routes/usuario'));
