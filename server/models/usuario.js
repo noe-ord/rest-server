@@ -47,7 +47,7 @@ let usuarioSchema = new Schema({
     }
 
 });
-// em metodo methods.toJSON siempre se ñllama cuando deseo imprimir
+// em metodo methods.toJSON siempre se llama cuando deseo imprimir
 // se recomienda el uso de fuction y no callback por el uso de this
 usuarioSchema.methods.toJSON = function() {
 

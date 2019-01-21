@@ -10,12 +10,12 @@ const {verificaToken, verificaAdmin_Role} = require('../middlewares/autenticatio
 app.get('/usuario', verificaToken, (req, res) => {
 
     // Ejemplo de extraer datos espesificos del usr
-    // return res.json({
-    //     usuario: req.usuario,
-    //     nombre: req.usuario.nombre,
-    //     email: req.usuario.email
-    // })
-    // 
+    return res.json({
+        usuario: req.usuario,
+        nombre: req.usuario.nombre,
+        email: req.usuario.email
+    })
+    
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
