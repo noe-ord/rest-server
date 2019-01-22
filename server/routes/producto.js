@@ -73,7 +73,7 @@ app.get('/producto/buscar/:termino', verificaToken, (req, res) => {
     // a mayusculas y minusculas con el parametro 'i'
     let regex = new RegExp(termino, 'i');
 
-    // Se manda como objeto y podemos agregar mas condiciones
+    // Se manda como objeto y podemos agregar mas condiciones en el objeto {}
     Producto.find({nombre: regex})
     .populate('categoria', 'nombre')
     .exec((err, productoS) => {
